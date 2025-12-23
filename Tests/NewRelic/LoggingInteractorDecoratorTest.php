@@ -15,15 +15,14 @@ namespace Ekino\NewRelicBundle\Tests\NewRelic;
 
 use Ekino\NewRelicBundle\NewRelic\LoggingInteractorDecorator;
 use Ekino\NewRelicBundle\NewRelic\NewRelicInteractorInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
 class LoggingInteractorDecoratorTest extends TestCase
 {
-    /**
-     * @dataProvider provideMethods
-     */
-    public function testGeneric(string $method, array $arguments, $return)
+    #[DataProvider('provideMethods')]
+    public function testGeneric(string $method, array $arguments, $return): void
     {
         $logger = $this->createMock(LoggerInterface::class);
         $decorated = $this->createMock(LoggingInteractorDecorator::class);
@@ -41,7 +40,7 @@ class LoggingInteractorDecoratorTest extends TestCase
         $this->assertSame($return, $result);
     }
 
-    public function provideMethods()
+    public function provideMethods(): \Generator
     {
         $reflection = new \ReflectionClass(NewRelicInteractorInterface::class);
         foreach ($reflection->getMethods() as $method) {
@@ -62,7 +61,7 @@ class LoggingInteractorDecoratorTest extends TestCase
         }
     }
 
-    private function getTypeStub(?\ReflectionType $type)
+    private function getTypeStub(?\ReflectionType $type): mixed
     {
         if (null === $type) {
             return uniqid('', true);

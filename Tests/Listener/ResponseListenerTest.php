@@ -17,6 +17,7 @@ use Ekino\NewRelicBundle\Listener\ResponseListener;
 use Ekino\NewRelicBundle\NewRelic\Config;
 use Ekino\NewRelicBundle\NewRelic\NewRelicInteractorInterface;
 use Ekino\NewRelicBundle\Twig\NewRelicExtension;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
@@ -146,9 +147,7 @@ class ResponseListenerTest extends TestCase
         $object->onKernelResponse($event);
     }
 
-    /**
-     * @dataProvider providerOnKernelResponseOnlyInstrumentHTMLResponses
-     */
+    #[DataProvider('providerOnKernelResponseOnlyInstrumentHTMLResponses')]
     public function testOnKernelResponseOnlyInstrumentHTMLResponses($content, $expectsSetContent, $contentType): void
     {
         $this->setupNoCustomMetricsOrParameters();

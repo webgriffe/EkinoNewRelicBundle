@@ -14,13 +14,14 @@ declare(strict_types=1);
 namespace Ekino\NewRelicBundle\Tests\DependencyInjection;
 
 use Ekino\NewRelicBundle\DependencyInjection\Configuration;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\Definition\PrototypedArrayNode;
 
 class ConfigurationTest extends TestCase
 {
-    public function testIgnoredRoutes()
+    public function testIgnoredRoutes(): void
     {
         $configuration = new Configuration();
         $rootNode = $configuration->getConfigTreeBuilder()
@@ -39,7 +40,7 @@ class ConfigurationTest extends TestCase
         $this->assertSame(['ignored_route1', 'ignored_route2'], $ignoredRoutesNode->merge(['ignored_route1'], ['ignored_route2']));
     }
 
-    public function testIgnoredPaths()
+    public function testIgnoredPaths(): void
     {
         $configuration = new Configuration();
         $rootNode = $configuration->getConfigTreeBuilder()
@@ -58,7 +59,7 @@ class ConfigurationTest extends TestCase
         $this->assertSame(['/ignored/path1', '/ignored/path2'], $ignoredPathsNode->merge(['/ignored/path1'], ['/ignored/path2']));
     }
 
-    public function testIgnoredCommands()
+    public function testIgnoredCommands(): void
     {
         $configuration = new Configuration();
         $rootNode = $configuration->getConfigTreeBuilder()
@@ -77,7 +78,7 @@ class ConfigurationTest extends TestCase
         $this->assertSame(['test:ignored-command1', 'test:ignored-command2'], $ignoredCommandsNode->merge(['test:ignored-command1'], ['test:ignored-command2']));
     }
 
-    public function testDefaults()
+    public function testDefaults(): void
     {
         $processor = new Processor();
 
@@ -93,7 +94,7 @@ class ConfigurationTest extends TestCase
         $this->assertIsArray($config['deployment_names']);
     }
 
-    public static function ignoredRoutesProvider()
+    public static function ignoredRoutesProvider(): array
     {
         return [
             ['single_ignored_route', ['single_ignored_route']],
@@ -102,7 +103,7 @@ class ConfigurationTest extends TestCase
         ];
     }
 
-    public static function ignoredPathsProvider()
+    public static function ignoredPathsProvider(): array
     {
         return [
             ['/single/ignored/path', ['/single/ignored/path']],
@@ -111,7 +112,7 @@ class ConfigurationTest extends TestCase
         ];
     }
 
-    public static function ignoredCommandsProvider()
+    public static function ignoredCommandsProvider(): array
     {
         return [
             ['single:ignored:command', ['single:ignored:command']],
@@ -120,7 +121,7 @@ class ConfigurationTest extends TestCase
         ];
     }
 
-    public static function deploymentNamesProvider()
+    public static function deploymentNamesProvider(): array
     {
         return [
             ['App1', ['App1']],
@@ -129,10 +130,8 @@ class ConfigurationTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider deploymentNamesProvider
-     */
-    public function testDeploymentNames($deploymentNameConfig, $expected)
+    #[DataProvider('deploymentNamesProvider')]
+    public function testDeploymentNames($deploymentNameConfig, $expected): void
     {
         $processor = new Processor();
 
@@ -143,10 +142,8 @@ class ConfigurationTest extends TestCase
         $this->assertSame($expected, $config2['deployment_names']);
     }
 
-    /**
-     * @dataProvider ignoredRoutesProvider
-     */
-    public function testIgnoreRoutes($ignoredRoutesConfig, $expected)
+    #[DataProvider('ignoredRoutesProvider')]
+    public function testIgnoreRoutes($ignoredRoutesConfig, $expected): void
     {
         $processor = new Processor();
 
@@ -155,10 +152,8 @@ class ConfigurationTest extends TestCase
         $this->assertSame($expected, $config['http']['ignored_routes']);
     }
 
-    /**
-     * @dataProvider ignoredPathsProvider
-     */
-    public function testIgnorePaths($ignoredPathsConfig, $expected)
+    #[DataProvider('ignoredPathsProvider')]
+    public function testIgnorePaths($ignoredPathsConfig, $expected): void
     {
         $processor = new Processor();
 
@@ -167,10 +162,8 @@ class ConfigurationTest extends TestCase
         $this->assertSame($expected, $config['http']['ignored_paths']);
     }
 
-    /**
-     * @dataProvider ignoredCommandsProvider
-     */
-    public function testIgnoreCommands($ignoredCommandsConfig, $expected)
+    #[DataProvider('ignoredCommandsProvider')]
+    public function testIgnoreCommands($ignoredCommandsConfig, $expected): void
     {
         $processor = new Processor();
 
