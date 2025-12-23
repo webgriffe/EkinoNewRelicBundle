@@ -21,18 +21,15 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: ['']
+        php: ['8.5']
         composer: ['']
-        phpunit: ['']
+        phpunit: ['12']
         deprecation: ['']
-        symfony: ['']
+        symfony: ['^8.0']
         stability: ['']
         include:
           # symfony version
           - php: 8.4
-            symfony: '^8.0'
-            phpunit: SYMFONY_PHPUNIT_VERSION=12
-          - php: 8.5
             symfony: '^8.0'
             phpunit: SYMFONY_PHPUNIT_VERSION=12
 
