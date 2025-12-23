@@ -24,14 +24,14 @@
         "symfony/dependency-injection": "^6.4|^7.0|^8.0",
         "symfony/event-dispatcher": "^6.4|^7.0|^8.0",
         "symfony/http-kernel": "^6.4|^7.0|^8.0",
-        "monolog/monolog": "^3.0"
+        "monolog/monolog": "^3.0|^4.0"
     },
     "require-dev": {
         "matthiasnoback/symfony-dependency-injection-test": "^4.3|^5.1|^6.0",
         "symfony/framework-bundle": "^6.4|^7.0|^8.0",
         "symfony/phpunit-bridge": "^5.3|^6.0|^7.0|^8.0",
         "twig/twig": "^1.32|^2.4|^3.0",
-        "symfony/monolog-bundle": "^3.10"
+        "symfony/monolog-bundle": "^3.10|^4.0"
     },
     "suggest": {
         "symfony/monolog-bundle": "^3.10"
