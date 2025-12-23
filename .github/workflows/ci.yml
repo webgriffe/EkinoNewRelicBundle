@@ -36,16 +36,21 @@ jobs:
           # symfony version
           - php: 8.3
             symfony: '^6.4'
+            phpunit: SYMFONY_PHPUNIT_VERSION=10
           - php: 8.3
             symfony: '^7.0'
+            phpunit: SYMFONY_PHPUNIT_VERSION=11
           - php: 8.4
             symfony: '^8.0'
+            phpunit: SYMFONY_PHPUNIT_VERSION=12
           - php: 8.5
             symfony: '^8.0'
+            phpunit: SYMFONY_PHPUNIT_VERSION=12
 
           # dev
           - php: 8.5
             stability: 'dev'
+            phpunit: SYMFONY_PHPUNIT_VERSION=12
 
     steps:
       - name: Set up PHP
