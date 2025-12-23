@@ -37,11 +37,11 @@ class ResponseListenerTest extends TestCase
     {
         $this->interactor = $this->getMockBuilder(NewRelicInteractorInterface::class)->getMock();
         $this->newRelic = $this->getMockBuilder(Config::class)
-            ->setMethods(['getCustomEvents', 'getCustomMetrics', 'getCustomParameters'])
+            ->onlyMethods(['getCustomEvents', 'getCustomMetrics', 'getCustomParameters'])
             ->disableOriginalConstructor()
             ->getMock();
         $this->extension = $this->getMockBuilder(NewRelicExtension::class)
-            ->setMethods(['isHeaderCalled', 'isFooterCalled', 'isUsed'])
+            ->onlyMethods(['isHeaderCalled', 'isFooterCalled', 'isUsed'])
             ->disableOriginalConstructor()
             ->getMock();
     }
@@ -266,7 +266,7 @@ class ResponseListenerTest extends TestCase
     private function createRequestMock($instrumentEnabled = true): Request
     {
         $mock = $this->getMockBuilder(Request::class)
-            ->setMethods(['get'])
+            ->onlyMethods(['get'])
             ->getMock();
         $mock->attributes = new ParameterBag(['_instrument' => $instrumentEnabled]);
 
@@ -281,7 +281,7 @@ class ResponseListenerTest extends TestCase
         $contentType = 'text/html',
     ): Response {
         $mock = $this->getMockBuilder(Response::class)
-            ->setMethods(['get', 'getContent', 'setContent'])
+            ->onlyMethods(['get', 'getContent', 'setContent'])
             ->getMock();
         $mock->headers = new ResponseHeaderBag(['Content-Type' => $contentType]);
 
