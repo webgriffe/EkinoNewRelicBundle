@@ -264,12 +264,8 @@ class ResponseListenerTest extends TestCase
 
     private function createRequestMock($instrumentEnabled = true): Request
     {
-        $mock = $this->getMockBuilder(Request::class)
-            ->onlyMethods(['get'])
-            ->getMock();
+        $mock = $this->getMockBuilder(Request::class)->getMock();
         $mock->attributes = new ParameterBag(['_instrument' => $instrumentEnabled]);
-
-        $mock->expects($this->any())->method('get')->willReturn($instrumentEnabled);
 
         return $mock;
     }
@@ -280,11 +276,10 @@ class ResponseListenerTest extends TestCase
         $contentType = 'text/html',
     ): Response {
         $mock = $this->getMockBuilder(Response::class)
-            ->onlyMethods(['get', 'getContent', 'setContent'])
+            ->onlyMethods(['getContent', 'setContent'])
             ->getMock();
         $mock->headers = new ResponseHeaderBag(['Content-Type' => $contentType]);
 
-        $mock->expects($this->any())->method('get')->willReturn($contentType);
         $mock->expects($content ? $this->any() : $this->never())->method('getContent')->willReturn($content ?? false);
 
         if ($expectsSetContent) {
