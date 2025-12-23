@@ -1,0 +1,19 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    Ekino\NewRelicBundle\Command\:
+        resource: '../../Command/*'
+
+    Ekino\NewRelicBundle\NewRelic\:
+        resource: '../../NewRelic/*'
+
+    Ekino\NewRelicBundle\TransactionNamingStrategy\:
+        resource: '../../TransactionNamingStrategy/*'
+
+    Ekino\NewRelicBundle\NewRelic\AdaptiveInteractor:
+        arguments:
+            - '@Ekino\NewRelicBundle\NewRelic\NewRelicInteractor'
+            - '@Ekino\NewRelicBundle\NewRelic\BlackholeInteractor'

@@ -178,7 +178,7 @@ class ResponseListenerTest extends TestCase
         $object->onKernelResponse($event);
     }
 
-    public function providerOnKernelResponseOnlyInstrumentHTMLResponses(): array
+    public static function providerOnKernelResponseOnlyInstrumentHTMLResponses(): array
     {
         return [
             // unsupported content types

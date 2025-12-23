@@ -44,8 +44,8 @@ class EkinoNewRelicExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('services.xml');
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('services.yaml');
 
         $container->setAlias(NewRelicInteractorInterface::class, $this->getInteractorServiceId($config))->setPublic(false);
         $container->setAlias(TransactionNamingStrategyInterface::class, $this->getTransactionNamingServiceId($config))->setPublic(false);
@@ -80,7 +80,7 @@ class EkinoNewRelicExtension extends Extension
             );
 
         if ($config['http']['enabled']) {
-            $loader->load('http_listener.xml');
+            $loader->load('http_listener.yaml');
             $container->getDefinition(RequestListener::class)
                 ->setArguments(
                     [
@@ -100,7 +100,7 @@ class EkinoNewRelicExtension extends Extension
         }
 
         if ($config['commands']['enabled']) {
-            $loader->load('command_listener.xml');
+            $loader->load('command_listener.yaml');
             $container->getDefinition(CommandListener::class)
                 ->setArguments(
                     [
@@ -110,22 +110,22 @@ class EkinoNewRelicExtension extends Extension
         }
 
         if ($config['exceptions']['enabled']) {
-            $loader->load('exception_listener.xml');
+            $loader->load('exception_listener.yaml');
         }
 
         if ($config['deprecations']['enabled']) {
-            $loader->load('deprecation_listener.xml');
+            $loader->load('deprecation_listener.yaml');
         }
 
         if ($config['twig']) {
-            $loader->load('twig.xml');
+            $loader->load('twig.yaml');
         }
 
         if ($config['enabled'] && $config['monolog']['enabled']) {
             if (!class_exists(\Monolog\Handler\NewRelicHandler::class)) {
                 throw new \LogicException('The "symfony/monolog-bundle" package must be installed in order to use "monolog" option.');
             }
-            $loader->load('monolog.xml');
+            $loader->load('monolog.yaml');
             $container->setParameter('ekino.new_relic.monolog', $config['monolog'] ?? []);
             $container->setParameter('ekino.new_relic.application_name', $config['application_name']);
             $container->setAlias('ekino.new_relic.logs_handler', $config['monolog']['service'])->setPublic(false);

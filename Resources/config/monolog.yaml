@@ -1,0 +1,11 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    Ekino\NewRelicBundle\Logging\:
+        resource: '../../Logging/*'
+
+    ekino.new_relic.monolog_handler:
+        class: Monolog\Handler\NewRelicHandler
