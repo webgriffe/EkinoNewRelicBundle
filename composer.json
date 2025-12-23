@@ -27,7 +27,7 @@
         "monolog/monolog": "^3.0"
     },
     "require-dev": {
-        "matthiasnoback/symfony-dependency-injection-test": "^4.3|^5.1",
+        "matthiasnoback/symfony-dependency-injection-test": "^4.3|^5.1|^6.0",
         "symfony/framework-bundle": "^6.4|^7.0|^8.0",
         "symfony/phpunit-bridge": "^5.3|^6.0|^7.0|^8.0",
         "twig/twig": "^1.32|^2.4|^3.0",
