@@ -50,11 +50,18 @@ class CommandListenerTest extends TestCase
         $interactor->expects($this->once())->method('setTransactionName')->with($this->equalTo('test:newrelic'));
         $interactor->expects($this->once())->method('enableBackgroundJob');
 
-        $interactor->expects($this->exactly(4))->method('addCustomParameter')->withConsecutive(
-            ['--foo', true],
-            ['--foobar[0]', 'baz'],
-            ['--foobar[1]', 'baz_2'],
-            ['name', 'bar']
+        $matcher = $this->exactly(4);
+        $interactor->expects($matcher)->method('addCustomParameter')->willReturnCallback(
+            function (string $name, $value) use ($matcher) {
+                match ($matcher->numberOfInvocations()) {
+                    1 => $this->assertEquals(['--foo', true], [$name, $value]),
+                    2 => $this->assertEquals(['--foobar[0]', 'baz'], [$name, $value]),
+                    3 => $this->assertEquals(['--foobar[1]', 'baz_2'], [$name, $value]),
+                    4 => $this->assertEquals(['name', 'bar'], [$name, $value]),
+                };
+
+                return true;
+            }
         );
 
         $command = new Command('test:newrelic');

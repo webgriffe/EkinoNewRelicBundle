@@ -86,23 +86,38 @@ class ResponseListenerTest extends TestCase
         $this->newRelic->expects($this->once())->method('getCustomMetrics')->willReturn($metrics);
         $this->newRelic->expects($this->once())->method('getCustomParameters')->willReturn($parameters);
 
-        $this->interactor->expects($this->exactly(2))->method('addCustomMetric')->withConsecutive(
-            ['foo_a', 4.7],
-            ['foo_b', 11]
+        $matcher1 = $this->exactly(2);
+        $this->interactor->expects($matcher1)->method('addCustomMetric')->willReturnCallback(
+            function (string $name, float $value) use ($matcher1) {
+                match ($matcher1->numberOfInvocations()) {
+                    1 => $this->assertEquals(['foo_a', 4.7], [$name, $value]),
+                    2 => $this->assertEquals(['foo_b', 11], [$name, $value]),
+                };
+
+                return true;
+            }
         );
-        $this->interactor->expects($this->exactly(2))->method('addCustomParameter')->withConsecutive(
-            ['foo_1', 'bar_1'],
-            ['foo_2', 'bar_2']
+
+        $matcher2 = $this->exactly(2);
+        $this->interactor->expects($matcher2)->method('addCustomParameter')->willReturnCallback(
+            function (string $name, $value) use ($matcher2) {
+                match ($matcher2->numberOfInvocations()) {
+                    1 => $this->assertEquals(['foo_1', 'bar_1'], [$name, $value]),
+                    2 => $this->assertEquals(['foo_2', 'bar_2'], [$name, $value]),
+                };
+
+                return true;
+            }
         );
-        $this->interactor->expects($this->exactly(2))->method('addCustomEvent')->withConsecutive(
-            ['WidgetSale', [
-                'color' => 'red',
-                'weight' => 12.5,
-            ]],
-            ['WidgetSale', [
-                'color' => 'blue',
-                'weight' => 12.5,
-            ]]
+
+        $matcher3 = $this->exactly(2);
+        $this->interactor->expects($matcher3)->method('addCustomEvent')->willReturnCallback(
+            function (string $name, array $attributes) use ($matcher3) {
+                match ($matcher3->numberOfInvocations()) {
+                    1 => $this->assertEquals(['WidgetSale', ['color' => 'red', 'weight' => 12.5]], [$name, $attributes]),
+                    2 => $this->assertEquals(['WidgetSale', ['color' => 'blue', 'weight' => 12.5]], [$name, $attributes]),
+                };
+            }
         );
 
         $event = $this->createFilterResponseEventDummy();
@@ -283,7 +298,17 @@ class ResponseListenerTest extends TestCase
         $mock->expects($content ? $this->any() : $this->never())->method('getContent')->willReturn($content ?? false);
 
         if ($expectsSetContent) {
-            $mock->expects($this->exactly(2))->method('setContent')->withConsecutive([''], [$expectsSetContent]);
+            $matcher = $this->exactly(2);
+            $mock->expects($matcher)->method('setContent')->willReturnCallback(
+                function (string $content) use ($matcher, $expectsSetContent, $mock) {
+                    match ($matcher->numberOfInvocations()) {
+                        1 => $this->assertEquals('', $content),
+                        2 => $this->assertEquals($expectsSetContent, $content),
+                    };
+
+                    return $mock;
+                }
+            );
         } else {
             $mock->expects($this->never())->method('setContent');
         }
