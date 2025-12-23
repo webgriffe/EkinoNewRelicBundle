@@ -23,7 +23,7 @@ jobs:
       matrix:
         php: ['8.5']
         composer: ['']
-        phpunit: ['12']
+        phpunit: ['SYMFONY_PHPUNIT_VERSION=12']
         deprecation: ['']
         symfony: ['^8.0']
         stability: ['']
